@@ -35,7 +35,17 @@ export const getFilteredBooks = async (req, res, next) => {
         readerObject: 0, // Exclude the 'readerObject' field
       },
     },
+    {
+      $sort: { start_date: 1 },
+    },
+    {
+      $skip: req.params.page * 10,
+    },
+    {
+      $limit: 10,
+    },
   ]);
+
   res.status(200).json({ books });
 };
 

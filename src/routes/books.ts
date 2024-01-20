@@ -13,7 +13,7 @@ const bookRouter = Router();
 
 bookRouter.get("/", getAllBooks);
 bookRouter.get("/stats", getBookStats);
-bookRouter.get("/filter", getFilteredBooks);
+bookRouter.get("/filter/:page", getFilteredBooks);
 bookRouter.put("/:id", updateBook);
 bookRouter.post("/", addBook);
 bookRouter.delete("/:id", deleteBook);

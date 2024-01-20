@@ -2,7 +2,7 @@
 
 import mongoose, { ConnectOptions } from "mongoose";
 
-const dbUrl = "mongodb://localhost:27017/your-database-name";
+const dbUrl = "mongodb://13.39.23.2:27017/trustmen";
 
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,

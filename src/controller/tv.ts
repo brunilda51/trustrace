@@ -82,6 +82,7 @@ export const addTvShow = async (req, res, next) => {
 
 export const updateTvShow = async (req, res, next) => {
   const body = req.body;
+
   try {
     const tv = await Tv.findOneAndUpdate(
       { _id: req.params.id },

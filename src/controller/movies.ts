@@ -1,3 +1,4 @@
+import { PipelineStage } from "mongoose";
 import Movie from "../models/movies";
 
 export const getAllMovies = async (req, res, next) => {
@@ -9,7 +10,39 @@ export const getFilteredMovies = async (req, res, next) => {
   let filterOption = req.query.viewer
     ? { "viewerObject.username": req.query.viewer }
     : {};
-  const movies = await Movie.aggregate([
+  let limit = req.query.limit ? Number.parseInt(req.query.limit) : 0;
+  let page = req.query.page ? req.query.page : 0;
+  let pipeline: PipelineStage[] = [
+    {
+      $facet: {
+        totalCount: [
+          {
+            $group: {
+              _id: null,
+              count: { $sum: 1 },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: "$totalCount",
+    },
+    {
+      $project: {
+        count: "$totalCount.count",
+      },
+    },
+  ];
+
+  const totalCount = await Movie.aggregate(pipeline);
+
+  // Calculate the maximum page number based on the total count and limit
+  const maxPage = Math.ceil(totalCount[0]?.count / limit);
+
+  // Ensure that the page value does not exceed the maximum page number
+  let finalPage = Math.min(page, maxPage);
+  let filterPipeline: PipelineStage[] = [
     {
       $lookup: {
         from: "users",
@@ -23,20 +56,25 @@ export const getFilteredMovies = async (req, res, next) => {
     {
       $replaceRoot: {
         newRoot: {
-          $mergeObjects: [
-            "$$ROOT", // Preserve existing fields from the 'movies' collection
-            { viewer: "$viewerObject" }, // Add the 'viewer' field from 'viewerObject'
-          ],
+          $mergeObjects: ["$$ROOT", { viewer: "$viewerObject" }],
         },
       },
     },
     {
       $project: {
-        viewerObject: 0, // Exclude the 'viewerObject' field
+        viewerObject: 0,
       },
     },
-  ]);
-  res.status(200).json({ movies });
+    {
+      $sort: { watch_datee: 1 },
+    },
+    {
+      $skip: finalPage * limit,
+    },
+  ];
+
+  const movies = await Movie.aggregate(filterPipeline);
+  res.status(200).json(movies);
 };
 
 export const getMovieStats = async (req, res, next) => {
