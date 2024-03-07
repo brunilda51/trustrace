@@ -1,4 +1,4 @@
-name: ci-cd pipeline deploy to prod
+name: Trustmen deployment
 
 on:
   push:
