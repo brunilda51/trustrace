@@ -17,7 +17,7 @@ app.use("/api/movie", movieRouter);
 app.use("/api/users", usersRouter);
 
 try {
-  mongoose.connect("mongodb://13.39.23.2:27017/trustmen");
+  mongoose.connect("mongodb://52.47.126.117:27017/trustmen");
   app.listen(port, () => {
     console.log(`server running on PORT ${port}...`);
   });
