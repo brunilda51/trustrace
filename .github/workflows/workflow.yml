@@ -15,6 +15,7 @@ jobs:
 
       - name: Add Github Actions IP to Security group
         run: |
+          aws ec2 authorize-security-group-ingress --group-name ${{ secrets.AWS_SG_NAME_BASTION }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
           aws ec2 authorize-security-group-ingress --group-name ${{ secrets.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
@@ -28,7 +29,8 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_KEY }}
           port: 22
-
+          script: |
+            cd credentials && ssh -i brunilda.pem ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/backend/trustrace && git stash'
       - name: Remove Github Actions IP from security group
         run: |
           aws ec2 revoke-security-group-ingress --group-name ${{ secrets.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
