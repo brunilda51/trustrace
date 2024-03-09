@@ -3,9 +3,11 @@ name: Trustmen deployment
 on:
   push:
     branches: main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Get Github action IP
         id: ip
@@ -19,20 +21,15 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
 
-      - name: Deploy to prod server
+      - name: Deploy to prod server via bastion host
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ secrets.BASTION_HOST }}
           username: ec2-user
           key: ${{ secrets.SSH_KEY }}
+          port: 22
           script: |
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh
-            cd /home/ec2-user/backend/trautrace
-            git stash
-            git pull origin main
-            npm install
-            pm2 restart trustrace
+            ssh -A ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/backend/trautrace && git stash && git pull origin main && npm install && npm build && pm2 restart trustrace'
 
       - name: Remove Github Actions IP from security group
         run: |
