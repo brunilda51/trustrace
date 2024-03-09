@@ -30,7 +30,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
-            cd credentials && ssh -i brunilda.pem ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/backend/trustrace && git stash'
+            cd credentials && ssh -i brunilda.pem ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/backend/trustrace && git stash && git pull origin main && npm install && npm build && pm2 restart trustrace'
       - name: Remove Github Actions IP from security group
         run: |
           aws ec2 revoke-security-group-ingress --group-name ${{ secrets.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
