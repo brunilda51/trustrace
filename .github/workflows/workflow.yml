@@ -29,7 +29,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
-            echo "${{ secrets.SSH_KEY }}" | ssh -i - ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/backend/trustrace && git stash'
+            ssh -i /credentials/brunilda.pem ec2-user@${{ secrets.BASTION_HOST }} 'cd /home/ec2-user/backend/trustrace && git stash'
 
       - name: Remove Github Actions IP from security group
         run: |
