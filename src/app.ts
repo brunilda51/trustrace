@@ -17,7 +17,20 @@ app.use("/api/movie", movieRouter);
 app.use("/api/users", usersRouter);
 
 try {
-  mongoose.connect("mongodb://52.47.126.117:27017/trustmen");
+  let mongoHost;
+
+  // Check if the application is running locally or on the server
+  if (process.env.NODE_ENV === "production") {
+    // If running on the server, use 'localhost'
+    mongoHost = "localhost";
+  } else {
+    // If running locally, use the IP address '13.38.34.81'
+    mongoHost = "13.38.34.81";
+  }
+
+  // Construct the MongoDB connection string
+  const mongoURI = `mongodb://${mongoHost}:27018/trustmen`;
+  mongoose.connect(mongoURI);
   app.listen(port, () => {
     console.log(`server running on PORT ${port}...`);
   });
