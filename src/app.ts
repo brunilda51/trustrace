@@ -6,35 +6,30 @@ import usersRouter from "./routes/users";
 import bookRouter from "./routes/books";
 import tvRouter from "./routes/tv";
 import movieRouter from "./routes/movies";
+import { connectToDatabase } from "./db";
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
 
-app.use("/api/books", bookRouter);
-app.use("/api/tv", tvRouter);
-app.use("/api/movie", movieRouter);
-app.use("/api/users", usersRouter);
+// Parent Router
+const apiRouter = express.Router();
 
-try {
-  let mongoHost;
+apiRouter.use("/books", bookRouter);
+apiRouter.use("/tv", tvRouter);
+apiRouter.use("/movie", movieRouter);
+apiRouter.use("/users", usersRouter);
 
-  // Check if the application is running locally or on the server
-  if (process.env.NODE_ENV === "production") {
-    // If running on the server, use 'localhost'
-    mongoHost = "localhost";
-  } else {
-    // If running locally, use the IP address '13.38.34.81'
-    mongoHost = "13.38.34.81";
-  }
+app.use("/api", apiRouter);
 
-  // Construct the MongoDB connection string
-  const mongoURI = `mongodb://${mongoHost}:27018/trustmen`;
-  mongoose.connect(mongoURI);
-  app.listen(port, () => {
-    console.log(`server running on PORT ${port}...`);
+// Connect to MongoDB
+connectToDatabase()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Error starting server:", error);
+    process.exit(1);
   });
-} catch (error) {
-  console.log(error);
-  process.exit(1);
-}

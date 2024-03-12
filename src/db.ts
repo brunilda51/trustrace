@@ -1,22 +1,22 @@
-// db.ts
+// db.js
+import mongoose from "mongoose";
 
-import mongoose, { ConnectOptions } from "mongoose";
+export async function connectToDatabase() {
+  try {
+    let mongoHost;
 
-const dbUrl = "mongodb://13.39.23.2:27017/trustmen";
+    if (process.env.NODE_ENV === "production") {
+      mongoHost = "localhost";
+    } else {
+      mongoHost = "13.38.34.81";
+    }
 
-mongoose.connect(dbUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-} as ConnectOptions);
-
-const database = mongoose.connection;
-
-database.on("error", (error) => {
-  console.error("MongoDB connectionss error:", error);
-});
-
-database.once("open", () => {
-  console.log("Connected to MongoDB");
-});
-
-export default database;
+    // Construct the MongoDB connection string
+    const mongoURI = `mongodb://${mongoHost}:27018/trustmen`;
+    await mongoose.connect(mongoURI);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1);
+  }
+}
