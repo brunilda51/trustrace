@@ -1,0 +1,260 @@
+openapi: 3.0.0
+info:
+  title: My API
+  description: |
+    This is the OpenAPI specification for My API.
+  version: 1.0.0
+servers:
+  - url: http://trust-balancer-1606046615.eu-west-3.elb.amazonaws.com/api
+paths:
+  /books:
+    get:
+      summary: Get all books
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
+    post:
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: "#/components/schemas/BookInput"
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+
+  /tv:
+    get:
+      summary: Get all TV shows
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TVShow"
+    post:
+      summary: Create a new TV show
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: "#/components/schemas/TVShowInput"
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+
+  /movie:
+    get:
+      summary: Get all movies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+    post:
+      summary: Create a new movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: "#/components/schemas/MovieInput"
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+
+  /users:
+    get:
+      summary: Get all users
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  items:
+                    $ref: "#/components/schemas/User"
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: "#/components/schemas/UserInput"
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        start_date:
+          type: string
+          format: date
+        finish_date:
+          type: string
+          format: date
+        rating:
+          type: string
+    BookInput:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        start_date:
+          type: string
+          format: date
+        finish_date:
+          type: string
+          format: date
+        rating:
+          type: string
+    Movie:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        director:
+          type: string
+        watch_date:
+          type: string
+          format: date
+        rating:
+          type: string
+        viewer:
+          type: string # Assuming viewer is represented by their ID
+    MovieInput:
+      type: object
+      properties:
+        title:
+          type: string
+        director:
+          type: string
+        watch_date:
+          type: string
+          format: date
+        rating:
+          type: string
+        viewer:
+          type: string # Assuming viewer is represented by their ID
+    TVShow:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        start_date:
+          type: string
+          format: date
+        finish_date:
+          type: string
+          format: date
+        rating:
+          type: string
+        viewer:
+          type: string # Assuming viewer is represented by their ID
+    TVShowInput:
+      type: object
+      properties:
+        title:
+          type: string
+        start_date:
+          type: string
+          format: date
+        finish_date:
+          type: string
+          format: date
+        rating:
+          type: string
+        viewer:
+          type: string # Assuming viewer is represented by their ID
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        date_of_birth:
+          type: string
+          format: date
+        profilePicture:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        lastLoginAt:
+          type: string
+          format: date-time
+    UserInput:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        date_of_birth:
+          type: string
+          format: date
+        profilePicture:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        lastLoginAt:
+          type: string
+          format: date-time
