@@ -9,7 +9,10 @@ servers:
 paths:
   /books:
     get:
+      tags:
+        - Books
       summary: Get all books
+      operationId: getAllBooks
       responses:
         "200":
           description: OK
@@ -20,6 +23,103 @@ paths:
                 items:
                   $ref: "#/components/schemas/Book"
     post:
+      tags:
+        - Books
+      summary: Create a new book
+      operationId: addBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookInput"
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+
+  /books/stats:
+    get:
+      tags:
+        - Books
+      summary: Get book statistics
+      operationId: getBookStats
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object # You may need to define the schema for book stats
+
+  /books/filter/{page}:
+    get:
+      tags:
+        - Books
+      summary: Get filtered books
+      operationId: getFilteredBooks
+      parameters:
+        - in: path
+          name: page
+          schema:
+            type: integer
+          required: true
+          description: Page number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
+
+  /books/{id}:
+    put:
+      tags:
+        - Books
+      summary: Update a book
+      operationId: updateBook
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the book to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookInput"
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+    delete:
+      tags:
+        - Books
+      summary: Delete a book
+      operationId: deleteBook
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the book to delete
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+    post:
+      tags:
+        - Books
       summary: Create a new book
       requestBody:
         required: true
@@ -37,6 +137,8 @@ paths:
 
   /tv:
     get:
+      tags:
+        - TVShows
       summary: Get all TV shows
       responses:
         "200":
@@ -48,6 +150,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/TVShow"
     post:
+      tags:
+        - TVShows
       summary: Create a new TV show
       requestBody:
         required: true
@@ -65,6 +169,8 @@ paths:
 
   /movie:
     get:
+      tags:
+        - Movie
       summary: Get all movies
       responses:
         "200":
@@ -76,6 +182,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/Movie"
     post:
+      tags:
+        - Movie
       summary: Create a new movie
       requestBody:
         required: true
@@ -93,6 +201,8 @@ paths:
 
   /users:
     get:
+      tags:
+        - Users
       summary: Get all users
       responses:
         "200":
@@ -106,6 +216,8 @@ paths:
                   items:
                     $ref: "#/components/schemas/User"
     post:
+      tags:
+        - Users
       summary: Create a new user
       requestBody:
         required: true
@@ -115,6 +227,15 @@ paths:
               type: object
               items:
                 $ref: "#/components/schemas/UserInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: "#/components/schemas/User"
 
 components:
   schemas:
