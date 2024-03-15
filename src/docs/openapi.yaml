@@ -66,6 +66,12 @@ paths:
             type: integer
           required: true
           description: Page number
+        - in: query
+          name: reader
+          schema:
+            type: string
+          required: false
+          description: Filter books by reader username
       responses:
         "200":
           description: OK
@@ -117,29 +123,13 @@ paths:
           description: No Content
         "400":
           description: Bad Request
-    post:
-      tags:
-        - Books
-      summary: Create a new book
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              items:
-                $ref: "#/components/schemas/BookInput"
-      responses:
-        "201":
-          description: Created
-        "400":
-          description: Bad Request
 
   /tv:
     get:
       tags:
         - TVShows
       summary: Get all TV shows
+      operationId: getAllTvShows
       responses:
         "200":
           description: OK
@@ -153,25 +143,97 @@ paths:
       tags:
         - TVShows
       summary: Create a new TV show
+      operationId: addTvShow
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              items:
-                $ref: "#/components/schemas/TVShowInput"
+              $ref: "#/components/schemas/TVShowInput"
       responses:
         "201":
           description: Created
         "400":
           description: Bad Request
 
-  /movie:
+  /tv/stats:
+    get:
+      tags:
+        - TVShows
+      summary: Get TV show statistics
+      operationId: getTvStats
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object # You may need to define the schema for TV show stats
+
+  /tv/filter:
+    get:
+      tags:
+        - TVShows
+      summary: Get filtered TV shows
+      operationId: getFilteredTvShows
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TVShow"
+
+  /tv/{id}:
+    put:
+      tags:
+        - TVShows
+      summary: Update a TV show
+      operationId: updateTvShow
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the TV show to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TVShowInput"
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+    delete:
+      tags:
+        - TVShows
+      summary: Delete a TV show
+      operationId: deleteTvShow
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the TV show to delete
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+
+  /movies:
     get:
       tags:
         - Movie
       summary: Get all movies
+      operationId: getAllMovies
       responses:
         "200":
           description: OK
@@ -185,17 +247,88 @@ paths:
       tags:
         - Movie
       summary: Create a new movie
+      operationId: addMovie
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              items:
-                $ref: "#/components/schemas/MovieInput"
+              $ref: "#/components/schemas/MovieInput"
       responses:
         "201":
           description: Created
+        "400":
+          description: Bad Request
+
+  /movies/stats:
+    get:
+      tags:
+        - Movie
+      summary: Get movie statistics
+      operationId: getMovieStats
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object # You may need to define the schema for movie stats
+
+  /movies/filter:
+    get:
+      tags:
+        - Movie
+      summary: Get filtered movies
+      operationId: getFilteredMovies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+
+  /movies/{id}:
+    put:
+      tags:
+        - Movie
+      summary: Update a movie
+      operationId: updateMovie
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the movie to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieInput"
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+    delete:
+      tags:
+        - Movie
+      summary: Delete a movie
+      operationId: deleteMovie
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the movie to delete
+      responses:
+        "204":
+          description: No Content
         "400":
           description: Bad Request
 

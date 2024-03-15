@@ -12,10 +12,10 @@ import {
 const bookRouter = Router();
 
 bookRouter.get("/", getAllBooks);
+bookRouter.post("/", addBook);
+bookRouter.put("/:id", updateBook);
+bookRouter.delete("/:id", deleteBook);
 bookRouter.get("/stats", getBookStats);
 bookRouter.get("/filter/:page", getFilteredBooks);
-bookRouter.put("/:id", updateBook);
-bookRouter.post("/", addBook);
-bookRouter.delete("/:id", deleteBook);
 
 export default bookRouter;

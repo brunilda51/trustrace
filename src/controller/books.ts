@@ -126,7 +126,8 @@ export const updateBook = async (
         finish_date: body.finish_date,
         rating: body.rating,
         reader: body.reader,
-      }
+      },
+      { new: true }
     );
     res.status(200).json({ book });
   } catch (err) {
