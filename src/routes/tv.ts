@@ -8,14 +8,15 @@ import {
   deleteTvShow,
   getTvStats,
 } from "../controller/tv";
+import { auth } from "../middleware/authMiddleware";
 
 const tvRouter = Router();
 
-tvRouter.get("/", getAllTvShows);
-tvRouter.get("/stats", getTvStats);
-tvRouter.get("/filter", getFilteredTvShows);
-tvRouter.put("/:id", updateTvShow);
-tvRouter.post("/", addTvShow);
-tvRouter.delete("/:id", deleteTvShow);
+tvRouter.get("/", auth, getAllTvShows);
+tvRouter.get("/stats", auth, getTvStats);
+tvRouter.get("/filter", auth, getFilteredTvShows);
+tvRouter.put("/:id", auth, updateTvShow);
+tvRouter.post("/", auth, addTvShow);
+tvRouter.delete("/:id", auth, deleteTvShow);
 
 export default tvRouter;

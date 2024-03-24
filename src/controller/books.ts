@@ -34,10 +34,7 @@ export const getFilteredBooks = async (
     {
       $replaceRoot: {
         newRoot: {
-          $mergeObjects: [
-            "$$ROOT", // Preserve existing fields from the 'books' collection
-            { reader: "$readerObject" }, // Add the 'reader' field from 'readerObject'
-          ],
+          $mergeObjects: ["$$ROOT", { reader: "$readerObject" }],
         },
       },
     },
@@ -77,14 +74,14 @@ export const getBookStats = async (
     { $unwind: "$readerObject" },
     {
       $group: {
-        _id: "$readerObject._id", // Group by the unique reader ID
-        reader: { $first: "$readerObject" }, // Preserve the reader information
-        count: { $sum: 1 }, // Count the documents for each reader
+        _id: "$readerObject._id",
+        reader: { $first: "$readerObject" },
+        count: { $sum: 1 },
       },
     },
     {
       $project: {
-        _id: 0, // Exclude the group _id
+        _id: 0,
       },
     },
   ]);

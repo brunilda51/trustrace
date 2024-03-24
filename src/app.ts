@@ -10,7 +10,10 @@ import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import path from "path";
 import cors from "cors";
+import authRouter from "./routes/auth";
+import * as dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 const port = 3000;
 
@@ -25,7 +28,7 @@ app.use(
 
 // Parent Router
 const apiRouter = express.Router();
-
+apiRouter.use("/auth", authRouter);
 apiRouter.use("/books", bookRouter);
 apiRouter.use("/tv", tvRouter);
 apiRouter.use("/movie", movieRouter);

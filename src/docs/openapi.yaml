@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.1.0
 info:
   title: My API
   description: |
@@ -7,6 +7,112 @@ info:
 servers:
   - url: http://trust-balancer-1606046615.eu-west-3.elb.amazonaws.com
 paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: User login
+      operationId: auth/loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token for authentication
+        "401":
+          description: Unauthorized
+
+  /auth/forgot-password:
+    post:
+      tags:
+        - Auth
+      summary: Forgot password
+      operationId: auth/forgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /auth/reset-password:
+    post:
+      tags:
+        - Auth
+      summary: Reset password
+      operationId: auth/resetPassword
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: true
+          description: JWT token received via email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newPassword:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: User logout
+      operationId: auth/logoutUser
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   /books:
     get:
       tags:
@@ -497,18 +603,6 @@ components:
           type: string
         email:
           type: string
-        date_of_birth:
+        password:
           type: string
-          format: date
-        profilePicture:
-          type: string
-        role:
-          type: string
-        status:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        lastLoginAt:
-          type: string
-          format: date-time
+    
