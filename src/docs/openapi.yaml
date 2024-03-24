@@ -6,6 +6,7 @@ info:
   version: 1.0.0
 servers:
   - url: http://trust-balancer-1606046615.eu-west-3.elb.amazonaws.com
+
 paths:
   /auth/login:
     post:
@@ -20,7 +21,7 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                email:
                   type: string
                 password:
                   type: string
@@ -119,6 +120,8 @@ paths:
         - Books
       summary: Get all books
       operationId: getAllBooks
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -133,6 +136,8 @@ paths:
         - Books
       summary: Create a new book
       operationId: addBook
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -151,6 +156,8 @@ paths:
         - Books
       summary: Get book statistics
       operationId: getBookStats
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -165,6 +172,8 @@ paths:
         - Books
       summary: Get filtered books
       operationId: getFilteredBooks
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: page
@@ -194,6 +203,8 @@ paths:
         - Books
       summary: Update a book
       operationId: updateBook
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -236,6 +247,8 @@ paths:
         - TVShows
       summary: Get all TV shows
       operationId: getAllTvShows
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -250,6 +263,8 @@ paths:
         - TVShows
       summary: Create a new TV show
       operationId: addTvShow
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -268,6 +283,8 @@ paths:
         - TVShows
       summary: Get TV show statistics
       operationId: getTvStats
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -282,6 +299,8 @@ paths:
         - TVShows
       summary: Get filtered TV shows
       operationId: getFilteredTvShows
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -298,6 +317,8 @@ paths:
         - TVShows
       summary: Update a TV show
       operationId: updateTvShow
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -340,6 +361,8 @@ paths:
         - Movie
       summary: Get all movies
       operationId: getAllMovies
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -354,6 +377,8 @@ paths:
         - Movie
       summary: Create a new movie
       operationId: addMovie
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -372,6 +397,8 @@ paths:
         - Movie
       summary: Get movie statistics
       operationId: getMovieStats
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -386,6 +413,8 @@ paths:
         - Movie
       summary: Get filtered movies
       operationId: getFilteredMovies
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -402,6 +431,8 @@ paths:
         - Movie
       summary: Update a movie
       operationId: updateMovie
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -425,6 +456,8 @@ paths:
         - Movie
       summary: Delete a movie
       operationId: deleteMovie
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -443,6 +476,9 @@ paths:
       tags:
         - Users
       summary: Get all users
+      operationId: getAllUsers
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: OK
@@ -458,6 +494,9 @@ paths:
       tags:
         - Users
       summary: Create a new user
+      operationId: createNewUser
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -477,6 +516,10 @@ paths:
                   $ref: "#/components/schemas/User"
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
   schemas:
     Book:
       type: object
